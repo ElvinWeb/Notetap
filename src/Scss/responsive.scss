@@ -1,0 +1,58 @@
+/*------- MEDIA QUERIES --------*/
+
+
+@media (min-width: 768px) {
+
+    .main {
+        padding-inline: var(--spacing-6);
+    }
+
+}
+
+@media (min-width: 992px) {
+    body {
+        padding-inline-start: var(--sidebar-width);
+    }
+
+
+    .overlay:not(.modal-overlay) {
+        display: none;
+    }
+
+    .sidebar {
+        visibility: visible;
+        left: 0;
+        height: 100vh;
+        grid-template-rows: repeat(3, max-content) 1fr max-content;
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    .sidebar.active {
+        transform: unset;
+    }
+
+    .sidebar .fab {
+        display: flex;
+    }
+
+    .main {
+        padding-inline: var(--spacing-10);
+    }
+
+    .menu-btn,
+    .main .fab {
+        display: none;
+    }
+
+}
+
+@media (min-width: 1400px) {
+
+    .main {
+        max-width: 1480px;
+        width: 100%;
+        margin-inline: auto;
+    }
+
+}
