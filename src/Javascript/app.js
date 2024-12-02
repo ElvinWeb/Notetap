@@ -5,6 +5,7 @@ import {
   makeElemEditable,
 } from "./utils.js";
 import { Tooltip } from "./components/Tooltip.js";
+import { db } from "./db.js";
 
 const sidebarTogglers = document.querySelectorAll("[data-sidebar-toggler]");
 const currentDateElem = document.querySelector("[data-current-date]");
@@ -32,7 +33,6 @@ greetElem.textContent = getGreetingMsg(currentHour);
 currentDateElem.textContent = new Date().toDateString().replace(" ", ", ");
 
 // Notebook create field
-
 /*
  * Shows a notebook creation field in the sidebar when the "Add Notebook" button is clicked.
  * The function dynamically adds a new notebook field element, makes it editable, and listens for

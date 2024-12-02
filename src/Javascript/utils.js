@@ -35,3 +35,8 @@ export const makeElemEditable = function (element) {
   element.setAttribute("contenteditable", true);
   element.focus();
 };
+
+// Generates a unique ID based on the current timestamp.
+export const generateID = function () {
+  return new Date().getTime().toString();
+};
