@@ -61,7 +61,6 @@ const showNotebookField = function () {
   // When user press 'Enter' then create notebook
   navItemField.addEventListener("keydown", createNotebook);
 };
-
 addNotebookBtn.addEventListener("click", showNotebookField);
 
 /*
@@ -79,3 +78,11 @@ const createNotebook = function (event) {
     client.notebook.create(notebookData);
   }
 };
+
+// Renders the existing notebook list by retrieving data from the database and passing it to the client.
+const renderExistedNotebook = function () {
+  const notebookList = db.get.notebook();
+  client.notebook.read(notebookList);
+};
+
+renderExistedNotebook();

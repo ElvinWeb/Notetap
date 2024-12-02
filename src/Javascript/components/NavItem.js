@@ -33,5 +33,14 @@ export const NavItem = function (id, name) {
   const tooltipElems = navItem.querySelectorAll("[data-tooltip]");
   tooltipElems.forEach(($elem) => Tooltip($elem));
 
+  /*
+   * Handles the click event on the navigation item. Updates the note panel's title, retrieves the associated notes,
+   * and marks the item as active.
+   */
+  navItem.addEventListener("click", function () {
+    notePanelTitle.textContent = name;
+    activeNotebook.call(this);
+  });
+
   return navItem;
 };

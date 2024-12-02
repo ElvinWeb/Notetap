@@ -40,5 +40,23 @@ export const client = {
       notePanel.innerHTML = emptyNotesTemplate;
       disableNoteCreateBtns(true);
     },
+
+    //  Reads and displays a list of notebooks in the UI.
+    read(notebookList) {
+      disableNoteCreateBtns(notebookList.length);
+
+      notebookList.forEach((notebookData, index) => {
+        const navItem = NavItem(notebookData.id, notebookData.name);
+
+        if (index === 0) {
+          activeNotebook.call(navItem);
+          notePanelTitle.textContent = notebookData.name;
+        }
+
+        sidebarList.appendChild(navItem);
+      });
+    },
   },
+
+  note: {},
 };

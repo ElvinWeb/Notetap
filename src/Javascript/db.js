@@ -54,4 +54,13 @@ export const db = {
       return notebookData;
     },
   },
+
+  get: {
+    //  Retrieves all notebooks from the database.
+    notebook() {
+      readDB();
+
+      return notekeeperDB.notebooks;
+    },
+  },
 };
