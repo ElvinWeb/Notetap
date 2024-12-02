@@ -1,4 +1,5 @@
 import { addEventOnElements, getGreetingMsg } from "./utils.js";
+import { Tooltip } from "./components/Tooltip.js";
 
 const sidebarTogglers = document.querySelectorAll("[data-sidebar-toggler]");
 const $currentDateElem = document.querySelector("[data-current-date]");
@@ -15,7 +16,7 @@ addEventOnElements(sidebarTogglers, "click", function () {
 });
 
 // Initialize tooltip behavior for all DOM elements with 'data-tooltip' attribute
-tooltipElems.forEach(($elem) => Tooltip($elem));
+tooltipElems.forEach((elem) => Tooltip(elem));
 
 // Show greeting message on homepage
 greetElem.textContent = getGreetingMsg(currentHour);
