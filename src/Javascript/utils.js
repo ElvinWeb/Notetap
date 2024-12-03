@@ -1,10 +1,10 @@
 // Attaches an event listener to a collection of DOM elements.
-export const addEventOnElements = function (elements, eventType, callback) {
+const addEventOnElements = function (elements, eventType, callback) {
   elements.forEach((element) => element.addEventListener(eventType, callback));
 };
 
 // Generates a greeting message based on the current hour of the day.
-export const getGreetingMsg = function (currentHour) {
+const getGreetingMsg = function (currentHour) {
   const greeting =
     currentHour < 5
       ? "Night"
@@ -24,19 +24,39 @@ export const getGreetingMsg = function (currentHour) {
 let lastActiveNavItem;
 
 // Activates a navigation item by adding the 'active' class and deactivates the previously active item.
-export const activeNotebook = function () {
+const activeNotebook = function () {
   lastActiveNavItem?.classList.remove("active");
   this.classList.add("active"); // this: navItem
   lastActiveNavItem = this; // this: navItem
 };
 
 //  Makes a DOM element editable by setting the 'contenteditable' attribute to true and focusing on it.
-export const makeElemEditable = function (element) {
+const makeElemEditable = function (element) {
   element.setAttribute("contenteditable", true);
   element.focus();
 };
 
 // Generates a unique ID based on the current timestamp.
-export const generateID = function () {
+const generateID = function () {
   return new Date().getTime().toString();
+};
+
+// Finds a notebook in database by its ID.
+const findNotebook = function (db, notebookId) {
+  return db.notebooks.find((notebook) => notebook.id === notebookId);
+};
+
+// Finds the index of a notebook in an array of notebooks based on its ID.
+const findNotebookIndex = function (db, notebookId) {
+  return db.notebooks.findIndex((item) => item.id === notebookId);
+};
+
+export {
+  addEventOnElements,
+  getGreetingMsg,
+  activeNotebook,
+  makeElemEditable,
+  generateID,
+  findNotebook,
+  findNotebookIndex,
 };

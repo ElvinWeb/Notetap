@@ -56,6 +56,18 @@ export const client = {
         sidebarList.appendChild(navItem);
       });
     },
+
+    // Updates the UI to reflect changes in a notebook.
+    update(notebookId, notebookData) {
+      const oldNotebook = document.querySelector(
+        `[data-notebook="${notebookId}"`
+      );
+      const newNotebook = NavItem(notebookData.id, notebookData.name);
+
+      notePanelTitle.textContent = notebookData.name;
+      sidebarList.replaceChild(newNotebook, oldNotebook);
+      activeNotebook.call(newNotebook);
+    },
   },
 
   note: {},

@@ -1,4 +1,6 @@
 import { Tooltip } from "./Tooltip.js";
+import { db } from "../db.js";
+import { client } from "../client.js";
 
 const notePanelTitle = document.querySelector("[data-note-panel-title]");
 
@@ -40,6 +42,26 @@ export const NavItem = function (id, name) {
   navItem.addEventListener("click", function () {
     notePanelTitle.textContent = name;
     activeNotebook.call(this);
+  });
+
+  // Notebook edit functionality
+  const navItemEditBtn = navItem.querySelector("[data-edit-btn]");
+  const navItemField = navItem.querySelector("[data-notebook-field]");
+  navItemEditBtn.addEventListener(
+    "click",
+    makeElemEditable.bind(null, navItemField)
+  );
+
+  navItemField.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      this.removeAttribute("contenteditable");
+
+      // Update edited data in database
+      const updatedNotebookData = db.update.notebook(id, this.textContent);
+
+      // Render updated notebook
+      client.notebook.update(id, updatedNotebookData);
+    }
   });
 
   return navItem;
