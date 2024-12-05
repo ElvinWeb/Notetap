@@ -75,7 +75,12 @@ export const NavItem = function (id, name) {
     modal.open();
 
     modal.onSubmit(function (isConfirm) {
-      console.log(isConfirm);
+      if (isConfirm) {
+        db.delete.notebook(id);
+        client.notebook.delete(id);
+      }
+
+      modal.close();
     });
   });
 
