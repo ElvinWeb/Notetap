@@ -1,6 +1,8 @@
-import { Tooltip } from "./Tooltip.js";
-import { db } from "../db.js";
 import { client } from "../client.js";
+import { db } from "../db.js";
+import { makeElemEditable } from "../utils.js";
+import { DeleteConfirmModal } from "./Modal.js";
+import { Tooltip } from "./Tooltip.js";
 
 const notePanelTitle = document.querySelector("[data-note-panel-title]");
 
@@ -33,7 +35,7 @@ export const NavItem = function (id, name) {
 
   // Show tooltip on edit and delete button
   const tooltipElems = navItem.querySelectorAll("[data-tooltip]");
-  tooltipElems.forEach(($elem) => Tooltip($elem));
+  tooltipElems.forEach((elem) => Tooltip(elem));
 
   /*
    * Handles the click event on the navigation item. Updates the note panel's title, retrieves the associated notes,
@@ -47,6 +49,7 @@ export const NavItem = function (id, name) {
   // Notebook edit functionality
   const navItemEditBtn = navItem.querySelector("[data-edit-btn]");
   const navItemField = navItem.querySelector("[data-notebook-field]");
+
   navItemEditBtn.addEventListener(
     "click",
     makeElemEditable.bind(null, navItemField)
@@ -62,6 +65,18 @@ export const NavItem = function (id, name) {
       // Render updated notebook
       client.notebook.update(id, updatedNotebookData);
     }
+  });
+
+  // Notebook delete functionality
+  const navItemDeleteBtn = navItem.querySelector("[data-delete-btn]");
+  navItemDeleteBtn.addEventListener("click", function () {
+    const modal = DeleteConfirmModal(name);
+
+    modal.open();
+
+    modal.onSubmit(function (isConfirm) {
+      console.log(isConfirm);
+    });
   });
 
   return navItem;
