@@ -1,5 +1,6 @@
 import { NavItem } from "./components/NavItem.js";
 import { activeNotebook } from "./utils.js";
+import { Card } from "./components/Card.js";
 
 const sidebarList = document.querySelector("[data-sidebar-list]");
 const notePanelTitle = document.querySelector("[data-note-panel-title]");
@@ -71,8 +72,12 @@ export const client = {
 
     // Deletes a notebook from the UI.
     delete(notebookId) {
-      const deletedNotebook = document.querySelector(`[data-notebook="${notebookId}"]`);
-      const activeNavItem = deletedNotebook.nextElementSibling ?? deletedNotebook.previousElementSibling;
+      const deletedNotebook = document.querySelector(
+        `[data-notebook="${notebookId}"]`
+      );
+      const activeNavItem =
+        deletedNotebook.nextElementSibling ??
+        deletedNotebook.previousElementSibling;
 
       if (activeNavItem) {
         activeNavItem.click();
@@ -86,5 +91,15 @@ export const client = {
     },
   },
 
-  note: {},
+  note: {
+    // Creates a new note card in the UI based on provided note data.
+    create(noteData) {
+      // Clear 'emptyNotesTemplate' from 'notePanel' if there is no note exists
+      if (!notePanel.querySelector("[data-note]")) notePanel.innerHTML = "";
+
+      // Append card in notePanel
+      const card = Card(noteData);
+      notePanel.prepend(card);
+    },
+  },
 };

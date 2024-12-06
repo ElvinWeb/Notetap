@@ -53,6 +53,25 @@ export const db = {
 
       return notebookData;
     },
+
+    // Adds a new note to a specified notebook in the database.
+    note(notebookId, object) {
+      readDB();
+
+      const notebook = findNotebook(notekeeperDB, notebookId);
+
+      const noteData = {
+        id: generateID(),
+        notebookId,
+        ...object,
+        postedOn: new Date().getTime(),
+      };
+
+      notebook.notes.unshift(noteData);
+      writeDB();
+
+      return noteData;
+    },
   },
 
   get: {

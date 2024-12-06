@@ -106,6 +106,8 @@ addEventOnElements(noteCreateBtns, "click", function () {
     const activeNotebookId = document.querySelector("[data-notebook].active")
       .dataset.notebook;
 
+    const noteData = db.post.note(activeNotebookId, noteObj);
+    client.note.create(noteData);
     modal.close();
   });
 });
