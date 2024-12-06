@@ -33,7 +33,50 @@ const NoteModal = function (
           <div class="state-layer"></div>
         </button>
       </div>
-    `;
+  `;
+
+  const submitBtn = modal.querySelector("[data-submit-btn]");
+  submitBtn.disabled = true;
+
+  const [titleField, textField] = modal.querySelectorAll("[data-note-field]");
+
+  const enableSubmit = function () {
+    submitBtn.disabled = !titleField.value && !textField.value;
+  };
+
+  textField.addEventListener("keyup", enableSubmit);
+  titleField.addEventListener("keyup", enableSubmit);
+
+  // Opens the note modal by appending it to the document body and setting focus on the title field.
+  const open = function () {
+    document.body.appendChild(modal);
+    document.body.appendChild(overlay);
+    titleField.focus();
+  };
+
+  // Closes the note modal by removing it from the document body.
+  const close = function () {
+    document.body.removeChild(modal);
+    document.body.removeChild(overlay);
+  };
+
+  // Attach click event to closeBtn, when click call the close modal function
+  const closeBtn = modal.querySelector("[data-close-btn]");
+  closeBtn.addEventListener("click", close);
+
+  // Handles the submission of a note within the modal.
+  const onSubmit = function (callback) {
+    submitBtn.addEventListener("click", function () {
+      const noteData = {
+        title: titleField.value,
+        text: textField.value,
+      };
+
+      callback(noteData);
+    });
+  };
+
+  return { open, close, onSubmit };
 };
 
 // Creates and manages a modal for confirming the deletion of an item

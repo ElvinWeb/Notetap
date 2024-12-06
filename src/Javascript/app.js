@@ -5,6 +5,7 @@ import {
   makeElemEditable,
 } from "./utils.js";
 import { Tooltip } from "./components/Tooltip.js";
+import { NoteModal } from "./components/Modal.js";
 import { db } from "./db.js";
 import { client } from "./client.js";
 
@@ -33,7 +34,7 @@ greetElem.textContent = getGreetingMsg(currentHour);
 // Show current date on homepage
 currentDateElem.textContent = new Date().toDateString().replace(" ", ", ");
 
-// Notebook create field
+//==============> Notebook create field
 /*
  * Shows a notebook creation field in the sidebar when the "Add Notebook" button is clicked.
  * The function dynamically adds a new notebook field element, makes it editable, and listens for
@@ -86,3 +87,25 @@ const renderExistedNotebook = function () {
 };
 
 renderExistedNotebook();
+
+//==================> Create new note
+/*
+ * Attaches event listeners to a collection of DOM elements representing "Create Note" buttons.
+ * When a button is clicked, it opens a modal for creating a new note and handles the submission
+ * of the new note to the database and client.
+ */
+const noteCreateBtns = document.querySelectorAll("[data-note-create-btn]");
+
+addEventOnElements(noteCreateBtns, "click", function () {
+  // Create and open a new modal
+  const modal = NoteModal();
+  modal.open();
+
+  // Handle the submission of the new note to the database and client
+  modal.onSubmit((noteObj) => {
+    const activeNotebookId = document.querySelector("[data-notebook].active")
+      .dataset.notebook;
+
+    modal.close();
+  });
+});
