@@ -67,6 +67,21 @@ const getRelativeTime = function (milliseconds) {
     : `${day} day ago`;
 };
 
+// Finds a specific note by its ID within a database of notebooks and their notes.
+const findNote = (db, noteId) => {
+  let note;
+  for (const notebook of db.notebooks) {
+    note = notebook.notes.find((note) => note.id === noteId);
+    if (note) break;
+  }
+  return note;
+};
+
+// Finds the index of a note in a notebook's array of notes based on its ID.
+const findNoteIndex = function (notebook, noteId) {
+  return notebook.notes.findIndex((note) => note.id === noteId);
+};
+
 export {
   addEventOnElements,
   getGreetingMsg,
@@ -76,4 +91,6 @@ export {
   findNotebook,
   findNotebookIndex,
   getRelativeTime,
+  findNoteIndex,
+  findNote,
 };

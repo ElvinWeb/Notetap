@@ -1,4 +1,9 @@
-import { generateID, findNotebook, findNotebookIndex } from "./utils.js";
+import {
+  generateID,
+  findNotebook,
+  findNotebookIndex,
+  findNote,
+} from "./utils.js";
 
 // DB Object
 let notekeeperDB = {};
@@ -102,6 +107,18 @@ export const db = {
       writeDB();
 
       return notebook;
+    },
+
+    // Updates the content of a note in the database.
+    note(noteId, object) {
+      readDB();
+
+      const oldNote = findNote(notekeeperDB, noteId);
+      const newNote = Object.assign(oldNote, object);
+
+      writeDB();
+
+      return newNote;
     },
   },
 
