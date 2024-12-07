@@ -111,3 +111,19 @@ addEventOnElements(noteCreateBtns, "click", function () {
     modal.close();
   });
 });
+
+/*
+ * Renders existing notes in the active notebook. Retrieves note data from the database based on the active notebook's ID
+ * and uses the client to display the notes.
+ */
+const renderExistedNote = function () {
+  const activeNotebookId = document.querySelector("[data-notebook].active")?.dataset.notebook;
+
+  if (activeNotebookId) {
+    const noteList = db.get.note(activeNotebookId);
+
+    client.note.read(noteList);
+  }
+};
+
+renderExistedNote();

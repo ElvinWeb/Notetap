@@ -6,7 +6,6 @@ const sidebarList = document.querySelector("[data-sidebar-list]");
 const notePanelTitle = document.querySelector("[data-note-panel-title]");
 const notePanel = document.querySelector("[data-note-panel]");
 const noteCreateBtns = document.querySelectorAll("[data-note-create-btn]");
-
 const emptyNotesTemplate = `
 <div class="empty-notes">
   <span class="material-symbols-rounded" aria-hidden="true">note_stack</span>
@@ -100,6 +99,20 @@ export const client = {
       // Append card in notePanel
       const card = Card(noteData);
       notePanel.prepend(card);
+    },
+
+    // Reads and displays a list of notes in the UI.
+    read(noteList) {
+      if (noteList.length) {
+        notePanel.innerHTML = "";
+
+        noteList.forEach((noteData) => {
+          const card = Card(noteData);
+          notePanel.appendChild(card);
+        });
+      } else {
+        notePanel.innerHTML = emptyNotesTemplate;
+      }
     },
   },
 };

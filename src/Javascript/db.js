@@ -81,6 +81,14 @@ export const db = {
 
       return notekeeperDB.notebooks;
     },
+
+    // Retrieves all notes within a specified notebook.
+    note(notebookId) {
+      readDB();
+
+      const notebook = findNotebook(notekeeperDB, notebookId);
+      return notebook.notes;
+    },
   },
 
   update: {
