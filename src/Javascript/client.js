@@ -1,5 +1,5 @@
-import { NavItem } from "./components/NavItem.js";
 import { activeNotebook } from "./utils.js";
+import { NavItem } from "./components/NavItem.js";
 import { Card } from "./components/Card.js";
 
 const sidebarList = document.querySelector("[data-sidebar-list]");
@@ -120,6 +120,12 @@ export const client = {
       const oldCard = document.querySelector(`[data-note="${noteId}"]`);
       const newCard = Card(noteData);
       notePanel.replaceChild(newCard, oldCard);
+    },
+
+    // Deletes a note card from the UI.
+    delete(noteId, isNoteExists) {
+      document.querySelector(`[data-note="${noteId}"]`).remove();
+      if (!isNoteExists) notePanel.innerHTML = emptyNotesTemplate;
     },
   },
 };

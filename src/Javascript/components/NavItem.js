@@ -1,8 +1,8 @@
+import { DeleteConfirmModal } from "./Modal.js";
+import { makeElemEditable, activeNotebook } from "../utils.js";
+import { Tooltip } from "./Tooltip.js";
 import { client } from "../client.js";
 import { db } from "../db.js";
-import { makeElemEditable } from "../utils.js";
-import { DeleteConfirmModal } from "./Modal.js";
-import { Tooltip } from "./Tooltip.js";
 
 const notePanelTitle = document.querySelector("[data-note-panel-title]");
 

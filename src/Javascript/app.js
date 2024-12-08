@@ -6,8 +6,8 @@ import {
 } from "./utils.js";
 import { Tooltip } from "./components/Tooltip.js";
 import { NoteModal } from "./components/Modal.js";
-import { db } from "./db.js";
 import { client } from "./client.js";
+import { db } from "./db.js";
 
 const sidebarTogglers = document.querySelectorAll("[data-sidebar-toggler]");
 const currentDateElem = document.querySelector("[data-current-date]");

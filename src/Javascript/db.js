@@ -3,6 +3,7 @@ import {
   findNotebook,
   findNotebookIndex,
   findNote,
+  findNoteIndex,
 } from "./utils.js";
 
 // DB Object
@@ -131,6 +132,19 @@ export const db = {
       notekeeperDB.notebooks.splice(notebookIndex, 1);
 
       writeDB();
+    },
+
+    // Deletes a note from a specified notebook in the database.
+    note(notebookId, noteId) {
+      readDB();
+
+      const notebook = findNotebook(notekeeperDB, notebookId);
+      const noteIndex = findNoteIndex(notebook, noteId);
+      notebook.notes.splice(noteIndex, 1);
+
+      writeDB();
+
+      return notebook.notes;
     },
   },
 };

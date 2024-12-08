@@ -1,8 +1,10 @@
-import { Tooltip } from "./Tooltip.js";
+import { DeleteConfirmModal, NoteModal } from "./Modal.js";
 import { getRelativeTime } from "../utils.js";
-import { NoteModal } from "./Modal.js";
+import { Tooltip } from "./Tooltip.js";
+import { client } from "../client.js";
 import { db } from "../db.js";
 
+// Creates an HTML card element representing a note based on provided note data.
 export const Card = function (noteData) {
   const { id, title, text, postedOn, notebookId } = noteData;
 
@@ -32,11 +34,6 @@ export const Card = function (noteData) {
 
   Tooltip(card.querySelector("[data-tooltip]"));
 
-  /*
-   * Attaches a click event listener to card element.
-   * When the card is clicked, it opens a modal with the note's details and allows for updating the note.
-   */
-
   // Note detail view & edit functionality
   card.addEventListener("click", function () {
     const modal = NoteModal(title, text, getRelativeTime(postedOn));
@@ -47,6 +44,24 @@ export const Card = function (noteData) {
 
       // Update the note in the client UI
       client.note.update(id, updatedData);
+      modal.close();
+    });
+  });
+
+  // Note delete functionality
+  const deleteBtn = card.querySelector("[data-delete-btn]");
+  deleteBtn.addEventListener("click", function (event) {
+    event.stopImmediatePropagation();
+    const modal = DeleteConfirmModal(title);
+
+    modal.open();
+
+    modal.onSubmit(function (isConfirm) {
+      if (isConfirm) {
+        const existedNotes = db.delete.note(notebookId, id);
+        client.note.delete(id, existedNotes.length);
+      }
+
       modal.close();
     });
   });
