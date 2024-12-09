@@ -752,11 +752,11 @@ body {
     grid-template-columns: 1fr;
     grid-template-rows: repeat(2, max-content) 1fr max-content;
     background-color: var(--surface-container-low);
+    box-shadow: var(--shadow-3);
     max-width: var(--sidebar-width);
     width: 100%;
     padding: var(--spacing-3);
     border-radius: 0 var(--radius-large) var(--radius-large) 0;
-    box-shadow: var(--shadow-3);
     z-index: 4;
     visibility: hidden;
     transition: var(--tr-duration-long) var(--tr-easing-emphasized);
