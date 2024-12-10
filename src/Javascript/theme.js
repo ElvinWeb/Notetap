@@ -1,26 +1,24 @@
-"use strict";
+const THEMES = {
+  LIGHT: 'light',
+  DARK: 'dark'
+};
+const rootElement = document.documentElement;
 
-/*
- * Toggles the theme between 'light' and 'dark'.
- * Manages the theme setting in the DOM and local storage.
- */
-const toggleTheme = function () {
-  const currentTheme =
-    document.documentElement.getAttribute("data-theme") || "light";
-  const newTheme = currentTheme === "light" ? "dark" : "light";
+// Manages theme toggling and initialization
+const toggleTheme = () => {
+  const currentTheme = rootElement.getAttribute('data-theme') || THEMES.LIGHT;
+  const newTheme = currentTheme === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT;
 
-  document.documentElement.setAttribute("data-theme", newTheme);
-  localStorage.setItem("theme", newTheme);
+  rootElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
 };
 
-// Initialize the theme
-const storedTheme = localStorage.getItem("theme");
-const systemThemeIsDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-const initialTheme = storedTheme ?? (systemThemeIsDark ? "dark" : "light");
-document.documentElement.setAttribute("data-theme", initialTheme);
+// Initialize theme based on stored preference or system setting
+const initialTheme = localStorage.getItem('theme') ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? THEMES.DARK : THEMES.LIGHT);
+rootElement.setAttribute('data-theme', initialTheme);
 
-// Attach toggleTheme to theme button click event
-window.addEventListener("DOMContentLoaded", function () {
-  const themeBtn = document.querySelector("[data-theme-btn]");
-  if (themeBtn) themeBtn.addEventListener("click", toggleTheme);
+// Set up theme toggle button
+window.addEventListener('DOMContentLoaded', () => {
+  const themeBtn = document.querySelector('[data-theme-btn]');
+  themeBtn?.addEventListener('click', toggleTheme);
 });

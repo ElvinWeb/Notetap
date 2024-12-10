@@ -6,144 +6,108 @@ import {
   findNoteIndex,
 } from "./utils.js";
 
-// DB Object
+// Database state
 let notekeeperDB = {};
 
-/*
- * Initializes a local database. If the data exists in local storage, it is loaded;
- * otherwise, a new empty database structure is created and stored.
+/**
+ * Initializes the database from localStorage or creates new if not exists
  */
-const initDB = function () {
-  const db = localStorage.getItem("notekeeperDB");
-
-  if (db) {
-    notekeeperDB = JSON.parse(db);
-  } else {
-    notekeeperDB.notebooks = [];
-    localStorage.setItem("notekeeperDB", JSON.stringify(notekeeperDB));
+const initDB = () => {
+  try {
+    const db = localStorage.getItem("notekeeperDB");
+    notekeeperDB = db ? JSON.parse(db) : { notebooks: [] };
+    if (!db) localStorage.setItem("notekeeperDB", JSON.stringify(notekeeperDB));
+  } catch (err) {
+    console.error("Failed to initialize database:", err);
+    notekeeperDB = { notebooks: [] };
   }
+};
+
+// Database read/write operations
+const readDB = () => {
+  notekeeperDB = JSON.parse(localStorage.getItem("notekeeperDB"));
+};
+
+const writeDB = () => {
+  localStorage.setItem("notekeeperDB", JSON.stringify(notekeeperDB));
 };
 
 initDB();
 
-// Reads and loads the localStorage data in to the global variable `notekeeperDB`
-const readDB = function () {
-  notekeeperDB = JSON.parse(localStorage.getItem("notekeeperDB"));
-};
-
-// Writes the current state of the global variable `notekeeperDB` to local storage
-const writeDB = function () {
-  localStorage.setItem("notekeeperDB", JSON.stringify(notekeeperDB));
-};
-
-/*
- * Collection of functions for performing CRUD (Create, Read, Update, Delete) operations on database.
- * The database state is managed using global variables and local storage.
- */
-
+// CRUD operations for notebooks and notes
 export const db = {
   post: {
-    // Adds a new notebook to the database
     notebook(name) {
       readDB();
-
-      const notebookData = {
+      const notebook = {
         id: generateID(),
         name,
         notes: [],
       };
-
-      notekeeperDB.notebooks.push(notebookData);
-
+      notekeeperDB.notebooks.push(notebook);
       writeDB();
-
-      return notebookData;
+      return notebook;
     },
 
-    // Adds a new note to a specified notebook in the database.
-    note(notebookId, object) {
+    note(notebookId, noteData) {
       readDB();
-
       const notebook = findNotebook(notekeeperDB, notebookId);
-
-      const noteData = {
+      const note = {
         id: generateID(),
         notebookId,
-        ...object,
-        postedOn: new Date().getTime(),
+        ...noteData,
+        postedOn: Date.now(),
       };
-
-      notebook.notes.unshift(noteData);
+      notebook.notes.unshift(note);
       writeDB();
-
-      return noteData;
+      return note;
     },
   },
 
   get: {
-    //  Retrieves all notebooks from the database.
     notebook() {
       readDB();
-
       return notekeeperDB.notebooks;
     },
 
-    // Retrieves all notes within a specified notebook.
     note(notebookId) {
       readDB();
-
-      const notebook = findNotebook(notekeeperDB, notebookId);
-      return notebook.notes;
+      return findNotebook(notekeeperDB, notebookId).notes;
     },
   },
 
   update: {
-    // Updates the name of a notebook in the database.
     notebook(notebookId, name) {
       readDB();
-
       const notebook = findNotebook(notekeeperDB, notebookId);
       notebook.name = name;
-
       writeDB();
-
       return notebook;
     },
 
-    // Updates the content of a note in the database.
-    note(noteId, object) {
+    note(noteId, updates) {
       readDB();
-
-      const oldNote = findNote(notekeeperDB, noteId);
-      const newNote = Object.assign(oldNote, object);
-
+      const note = findNote(notekeeperDB, noteId);
+      Object.assign(note, updates);
       writeDB();
-
-      return newNote;
+      return note;
     },
   },
 
   delete: {
-    // Deletes a notebook from the database.
     notebook(notebookId) {
       readDB();
-
-      const notebookIndex = findNotebookIndex(notekeeperDB, notebookId);
-      notekeeperDB.notebooks.splice(notebookIndex, 1);
-
+      const index = findNotebookIndex(notekeeperDB, notebookId);
+      notekeeperDB.notebooks.splice(index, 1);
       writeDB();
     },
 
-    // Deletes a note from a specified notebook in the database.
     note(notebookId, noteId) {
       readDB();
-
       const notebook = findNotebook(notekeeperDB, notebookId);
-      const noteIndex = findNoteIndex(notebook, noteId);
-      notebook.notes.splice(noteIndex, 1);
-
+      const index = findNoteIndex(notebook, noteId);
+      notebook.notes.splice(index, 1);
       writeDB();
-
       return notebook.notes;
     },
   },
